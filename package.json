@@ -1,0 +1,26 @@
+{
+  "name": "blackjack-game-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "build": "webpack"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.1",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "http-proxy-middleware": "^2.0.6",
+    "mysql": "^2.18.1",
+    "nodemon": "^2.0.20"
+  },
+  "devDependencies": {
+    "webpack-cli": "^5.0.1"
+  }
+}
