@@ -18,7 +18,7 @@ app.use(cors({
 }))
 
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json());              //이 씨 발럼땜에 몇시간을 잡아 쳐먹은거야 아 ㅅㅂ
+app.use(express.json());              //얘땜에 시간 4시간버림..
 
 app.post("/signup", (req, res) => {
     console.log('/signup', req.body);
@@ -33,7 +33,7 @@ app.post("/signup", (req, res) => {
         idcheck.check = false;
 
         if(rows[0] === undefined){
-            const sqlQuery = "INSERT INTO blackjack.user (userid, userpw, username, usermoney, userban) VALUES (?, ?, ?, 10000, 'N')";
+            const sqlQuery = "INSERT INTO blackjack.user (userid, userpw, username, usermoney, userban) VALUES (?, ?, ?, 300, 'N')";
             db.query(sqlQuery, [id, pw, name], (err, result) => {
                 res.send(result);
             });
@@ -118,6 +118,22 @@ app.post("/betting", (req, res) => {
         });
     }
 });
+
+
+/* app.post("/randomcard", (req, res) => {
+    console.log(req.body);
+    var id = req.body.userid;
+    var betsmoney = req.body.betsmoney;
+
+    const ischeckQuery = "SELECT id,  FROM blackjack.user WHERE userid = ?";
+    db.query(ischeckQuery, [id], (err, rows) => {
+
+        console.log(rows[0].usermoney)
+
+        logincheck.usermoney = rows[0].usermoney;
+        res.send(logincheck);
+    });
+}); */
 
 
 app.listen(PORT, () => {
