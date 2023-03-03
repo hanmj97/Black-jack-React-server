@@ -120,20 +120,20 @@ app.post("/betting", (req, res) => {
 });
 
 
-/* app.post("/randomcard", (req, res) => {
+app.post("/randomcard", (req, res) => {
     console.log(req.body);
     var id = req.body.userid;
+    var perfectbetsmoney = req.body.perfectbetsmoney;
     var betsmoney = req.body.betsmoney;
 
-    const ischeckQuery = "SELECT id,  FROM blackjack.user WHERE userid = ?";
-    db.query(ischeckQuery, [id], (err, rows) => {
-
-        console.log(rows[0].usermoney)
-
-        logincheck.usermoney = rows[0].usermoney;
-        res.send(logincheck);
+    const ischeckQuery = "SELECT id, cardpattern, cardnum, packnum, usestate, cardimg from blackjack.card Order by rand() Limit 4";
+    db.query(ischeckQuery, [], (err, rows) => {
+        res.send(rows);
     });
-}); */
+});
+
+
+
 
 
 app.listen(PORT, () => {
