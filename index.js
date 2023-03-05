@@ -117,7 +117,6 @@ app.post("/betting", (req, res) => {
 
 
 app.post("/randomcard", (req, res) => {
-    console.log(req.body);
     var id = req.body.userid;
     var perfectbetsmoney = req.body.perfectbetsmoney;
     var betsmoney = req.body.betsmoney;
@@ -135,18 +134,57 @@ app.post("/randomcard", (req, res) => {
 
                     for(var i = 0; i < rows.length; i++){
                         var cardid = rows[i].id;
+                        var cardnum1 = rows[0].cardnum;
+                        var cardnum2 = rows[2].cardnum;
 
-                        const sqlQuery = "UPDATE blackjack.card SET usestate = 'Y' WHERE id = ?";
-                        db.query(sqlQuery, [cardid], (err, result) => {
-                            console.log("card state update complete!");
-                        });
+                        if(cardnum1 == 11 && cardnum2 == 11){
+                            const ischeckQuery2 = "SELECT id, cardpattern, cardnum, packnum, usestate, cardimg from blackjack.card WHERE usestate = 'N' Order by rand() Limit 4";
+                            db.query(ischeckQuery2, [], (err, rows) => {
+
+                                for(var i = 0; i < rows.length; i++){
+                                    var cardid = rows[i].id;
+                                
+                                    const sqlQuery = "UPDATE blackjack.card SET usestate = 'Y' WHERE id = ?";
+                                    db.query(sqlQuery, [cardid], (err, result) => {
+                                        console.log("card state update complete!");
+                                    });
+                                }
+
+                                if(rows[3].cardnum == 10 || rows[3].cardnum == 11){
+                                    const mapArray = rows.map(obj => {
+                                        return(
+                                            {...obj, insurance: "insurance"}
+                                        );
+                                    })
+
+                                    res.send(mapArray);
+                                }else {
+                                    res.send(rows);
+                                }
+                            });
+                        }else {
+                            const sqlQuery = "UPDATE blackjack.card SET usestate = 'Y' WHERE id = ?";
+                            db.query(sqlQuery, [cardid], (err, result) => {
+                                console.log("card state update complete!");
+                            });
+                        }
                     }
 
-                    res.send(rows);
+                    if(rows[3].cardnum == 10 || rows[3].cardnum == 11){
+                        const mapArray = rows.map(obj => {
+                            return(
+                                {...obj, insurance: "insurance"}
+                            );
+                        })
+
+                        res.send(mapArray);
+                    }else {
+                        res.send(rows);
+                    }
                 });
             });
         }else {
-            const ischeckQuery = "SELECT id, cardpattern, cardnum, packnum, usestate, cardimg from blackjack.card WHERE usestate = 'N' Order by rand() Limit 4";
+            const ischeckQuery = "SELECT id, cardpattern, cardnum, packnum, usestate, cardimg, '' as insurance from blackjack.card WHERE usestate = 'N' Order by rand() Limit 4";
             db.query(ischeckQuery, [], (err, rows) => {
 
                 for(var i = 0; i < rows.length; i++){
@@ -158,7 +196,17 @@ app.post("/randomcard", (req, res) => {
                     });
                 }
 
-                res.send(rows);
+                if(rows[3].cardnum == 10 || rows[3].cardnum == 11){
+                    const mapArray = rows.map(obj => {
+                        return(
+                            {...obj, insurance: "insurance"}
+                        );
+                    })
+
+                    res.send(mapArray);
+                }else {
+                    res.send(rows);
+                }
             });
         }
     });
