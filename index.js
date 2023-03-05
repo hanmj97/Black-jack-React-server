@@ -21,8 +21,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());              //얘땜에 시간 4시간버림..
 
 app.post("/signup", (req, res) => {
-    console.log('/signup', req.body);
-    console.log(req.body.id);
     var id = req.body.id;
     var pw = req.body.pw;
     var name = req.body.name;
@@ -47,7 +45,6 @@ app.post("/signup", (req, res) => {
 
 
 app.post("/signin", (req, res) => {
-    console.log(req.body.id);
     var id = req.body.id;
     var pw = req.body.pw;
     const logincheck = new Object();
@@ -75,7 +72,6 @@ app.post("/signin", (req, res) => {
 });
 
 app.post("/userinfo", (req, res) => {
-    console.log(req.body.id);
     var id = req.body.id;
 
     if(id != null) {
@@ -126,8 +122,82 @@ app.post("/randomcard", (req, res) => {
     var perfectbetsmoney = req.body.perfectbetsmoney;
     var betsmoney = req.body.betsmoney;
 
-    const ischeckQuery = "SELECT id, cardpattern, cardnum, packnum, usestate, cardimg from blackjack.card Order by rand() Limit 4";
+    const cardcheckQuery = "SELECT id, cardpattern, cardnum, packnum, usestate, cardimg from blackjack.card WHERE usestate = 'N'";
+    db.query(cardcheckQuery, [], (err, cardrows) => {
+
+        if(cardrows.length < 30) {
+            const recardstackQuery = "UPDATE blackjack.card SET usestate = 'N' WHERE 1 = 1";
+            db.query(recardstackQuery, [], (err, result) => {
+                console.log("card stack restart!");
+
+                const ischeckQuery = "SELECT id, cardpattern, cardnum, packnum, usestate, cardimg from blackjack.card WHERE usestate = 'N' Order by rand() Limit 4";
+                db.query(ischeckQuery, [], (err, rows) => {
+
+                    for(var i = 0; i < rows.length; i++){
+                        var cardid = rows[i].id;
+
+                        const sqlQuery = "UPDATE blackjack.card SET usestate = 'Y' WHERE id = ?";
+                        db.query(sqlQuery, [cardid], (err, result) => {
+                            console.log("card state update complete!");
+                        });
+                    }
+
+                    res.send(rows);
+                });
+            });
+        }else {
+            const ischeckQuery = "SELECT id, cardpattern, cardnum, packnum, usestate, cardimg from blackjack.card WHERE usestate = 'N' Order by rand() Limit 4";
+            db.query(ischeckQuery, [], (err, rows) => {
+
+                for(var i = 0; i < rows.length; i++){
+                    var cardid = rows[i].id;
+
+                    const sqlQuery = "UPDATE blackjack.card SET usestate = 'Y' WHERE id = ?";
+                    db.query(sqlQuery, [cardid], (err, result) => {
+                        console.log("card state update complete!");
+                    });
+                }
+
+                res.send(rows);
+            });
+        }
+    });
+});
+
+
+app.post("/hit", (req, res) => {
+    var id = req.body.userid;
+    var perfectbetsmoney = req.body.perfectbetsmoney;
+    var betsmoney = req.body.betsmoney;
+
+    const ischeckQuery = "SELECT id, cardpattern, cardnum, packnum, usestate, cardimg from blackjack.card WHERE usestate = 'N' Order by rand() Limit 1";
     db.query(ischeckQuery, [], (err, rows) => {
+        var hitcardid = rows[0].id;
+
+        const sqlQuery = "UPDATE blackjack.card SET usestate = 'Y' WHERE id = ?";
+        db.query(sqlQuery, [hitcardid], (err, result) => {
+            console.log("hit card state update complete");
+        });
+
+        res.send(rows);
+    });
+});
+
+
+app.post("/stand", (req, res) => {
+    var id = req.body.userid;
+    var perfectbetsmoney = req.body.perfectbetsmoney;
+    var betsmoney = req.body.betsmoney;
+
+    const ischeckQuery = "SELECT id, cardpattern, cardnum, packnum, usestate, cardimg from blackjack.card WHERE usestate = 'N' Order by rand() Limit 1";
+    db.query(ischeckQuery, [], (err, rows) => {
+        var standcardid = rows[0].id;
+
+        const sqlQuery = "UPDATE blackjack.card SET usestate = 'Y' WHERE id = ?";
+        db.query(sqlQuery, [standcardid], (err, result) => {
+            console.log("Dealer hit card state update complete");
+        });
+
         res.send(rows);
     });
 });
