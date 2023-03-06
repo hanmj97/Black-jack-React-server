@@ -251,7 +251,49 @@ app.post("/stand", (req, res) => {
 });
 
 
+app.post("/userwin", (req, res) => {
+    var id = req.body.userid;
+    var betsmoney = req.body.betsmoney;
 
+    const calculatecheck = new Object();
+
+    const ischeckQuery = "update blackjack.user set usermoney = usermoney + (? * 2) where userid = ?";
+    db.query(ischeckQuery, [betsmoney, id], (err, rows) => {
+        calculatecheck.calculate = "calculate finish";
+
+        res.send(calculatecheck);
+    });
+});
+
+
+app.post("/userdraw", (req, res) => {
+    var id = req.body.userid;
+    var betsmoney = req.body.betsmoney;
+
+    const calculatecheck = new Object();
+
+    const ischeckQuery = "update blackjack.user set usermoney = usermoney + ? where userid = ?";
+    db.query(ischeckQuery, [betsmoney, id], (err, rows) => {
+        calculatecheck.calculate = "calculate finish";
+
+        res.send(calculatecheck);
+    });
+});
+
+
+app.post("/userblackjack", (req, res) => {
+    var id = req.body.userid;
+    var betsmoney = req.body.betsmoney;
+
+    const calculatecheck = new Object();
+
+    const ischeckQuery = "update blackjack.user set usermoney = usermoney + ? + (? * 1.4) where userid = ?";
+    db.query(ischeckQuery, [betsmoney, betsmoney, id], (err, rows) => {
+        calculatecheck.calculate = "calculate finish";
+
+        res.send(calculatecheck);
+    });
+});
 
 
 app.listen(PORT, () => {
