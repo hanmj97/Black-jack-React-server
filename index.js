@@ -80,8 +80,6 @@ app.post("/userinfo", (req, res) => {
         const ischeckQuery = "SELECT usermoney FROM blackjack.user WHERE userid = ?";
         db.query(ischeckQuery, [id], (err, rows) => {
 
-            console.log(rows[0].usermoney)
-
             logincheck.usermoney = rows[0].usermoney;
             res.send(logincheck);
         });
@@ -274,6 +272,21 @@ app.post("/userdraw", (req, res) => {
 
     const ischeckQuery = "update blackjack.user set usermoney = usermoney + ? where userid = ?";
     db.query(ischeckQuery, [betsmoney, id], (err, rows) => {
+        calculatecheck.calculate = "calculate finish";
+
+        res.send(calculatecheck);
+    });
+});
+
+
+app.post("/userperfectbet", (req, res) => {
+    var id = req.body.userid;
+    var perfectbetsmoney = req.body.perfectbetsmoney;
+
+    const calculatecheck = new Object();
+
+    const ischeckQuery = "update blackjack.user set usermoney = usermoney + (? * 30) where userid = ?";
+    db.query(ischeckQuery, [perfectbetsmoney, id], (err, rows) => {
         calculatecheck.calculate = "calculate finish";
 
         res.send(calculatecheck);
