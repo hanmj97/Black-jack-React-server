@@ -150,7 +150,7 @@ app.post("/randomcard", (req, res) => {
                                     });
                                 }
 
-                                if(rows[3].cardnum == 10 || rows[3].cardnum == 11){
+                                if(rows[3].cardnum == 11){
                                     const mapArray = rows.map(obj => {
                                         return(
                                             {...obj, insurance: "insurance"}
@@ -170,7 +170,7 @@ app.post("/randomcard", (req, res) => {
                         }
                     }
 
-                    if(rows[3].cardnum == 10 || rows[3].cardnum == 11){
+                    if(rows[3].cardnum == 11){
                         const mapArray = rows.map(obj => {
                             return(
                                 {...obj, insurance: "insurance"}
@@ -196,7 +196,7 @@ app.post("/randomcard", (req, res) => {
                     });
                 }
 
-                if(rows[3].cardnum == 10 || rows[3].cardnum == 11){
+                if(rows[3].cardnum == 11){
                     const mapArray = rows.map(obj => {
                         return(
                             {...obj, insurance: "insurance"}
