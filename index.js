@@ -135,7 +135,7 @@ app.post("/randomcard", (req, res) => {
                         var cardnum1 = rows[0].cardnum;
                         var cardnum2 = rows[2].cardnum;
 
-                        if(cardnum1 == 11 && cardnum2 == 11){
+                        if(cardnum1 == 1 && cardnum2 == 1){
                             const ischeckQuery2 = "SELECT id, cardpattern, cardnum, packnum, usestate, cardimg from blackjack.card WHERE usestate = 'N' Order by rand() Limit 4";
                             db.query(ischeckQuery2, [], (err, rows) => {
 
@@ -148,7 +148,7 @@ app.post("/randomcard", (req, res) => {
                                     });
                                 }
 
-                                if(rows[3].cardnum == 11){
+                                if(rows[3].cardnum == 1){
                                     const mapArray = rows.map(obj => {
                                         return(
                                             {...obj, insurance: "insurance"}
@@ -168,7 +168,7 @@ app.post("/randomcard", (req, res) => {
                         }
                     }
 
-                    if(rows[3].cardnum == 11){
+                    if(rows[3].cardnum == 1){
                         const mapArray = rows.map(obj => {
                             return(
                                 {...obj, insurance: "insurance"}
@@ -194,7 +194,7 @@ app.post("/randomcard", (req, res) => {
                     });
                 }
 
-                if(rows[3].cardnum == 11){
+                if(rows[3].cardnum == 1){
                     const mapArray = rows.map(obj => {
                         return(
                             {...obj, insurance: "insurance"}
