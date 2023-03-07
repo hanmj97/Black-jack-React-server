@@ -5,7 +5,7 @@ const mysql = require("mysql");
 const PORT = process.env.port || 8000;
 
 const db = mysql.createPool({
-    host: "https://port-0-black-jack-react-server-p8xrq2mleyd78ib.sel3.cloudtype.app/",
+    host: "localhost",
     user: "root",
     password: "7891",
     database: "blackjack",
