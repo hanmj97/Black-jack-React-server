@@ -30,7 +30,9 @@ app.post("/signup", (req, res) => {
     db.query(ischeckQuery, [id], (err, rows) => {
         idcheck.check = false;
 
-        if(rows === undefined){
+        console.log(rows[0]);
+        
+        if(rows[0] === undefined){
             const sqlQuery = "INSERT INTO blackjack.user (userid, userpw, username, usermoney, userban) VALUES (?, ?, ?, 300, 'N')";
             db.query(sqlQuery, [id, pw, name], (err, result) => {
                 res.send(result);
@@ -53,9 +55,9 @@ app.post("/signin", (req, res) => {
     db.query(ischeckQuery, [id, pw], (err, rows) => {
         logincheck.check = false;
 
-        console.log(rows);
+        console.log(rows[0]);
 
-        if(rows === undefined){
+        if(rows[0] === undefined){
             logincheck.check = false;
             logincheck.affectedRows = 0;
             logincheck.userid = "";
