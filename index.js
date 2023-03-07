@@ -58,7 +58,7 @@ app.post("/signin", (req, res) => {
 
     const ischeckQuery = "SELECT userid, username, usermoney FROM blackjack.user";
     db.query(ischeckQuery, [id, pw], (err, rows) => {
-        console.log(rows);
+        console.log("SELECT userid, username, usermoney FROM blackjack.user => " + rows);
 
     });
 
