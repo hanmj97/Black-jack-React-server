@@ -30,17 +30,22 @@ app.post("/signup", (req, res) => {
     db.query(ischeckQuery, [id], (err, rows) => {
         idcheck.check = false;
 
-        console.log(rows[0]);
-        
-        if(rows[0] === undefined){
+        if(rows && rows.length > 0){
+            if(rows[0] === undefined){
+                const sqlQuery = "INSERT INTO blackjack.user (userid, userpw, username, usermoney, userban) VALUES (?, ?, ?, 300, 'N')";
+                db.query(sqlQuery, [id, pw, name], (err, result) => {
+                    res.send(result);
+                });
+            }else {
+                idcheck.check = false;
+                idcheck.affectedRows = 0;
+                res.send(idcheck);
+            }
+        }else {
             const sqlQuery = "INSERT INTO blackjack.user (userid, userpw, username, usermoney, userban) VALUES (?, ?, ?, 300, 'N')";
             db.query(sqlQuery, [id, pw, name], (err, result) => {
                 res.send(result);
             });
-        }else {
-            idcheck.check = false;
-            idcheck.affectedRows = 0;
-            res.send(idcheck);
         }
     });
 });
@@ -55,21 +60,28 @@ app.post("/signin", (req, res) => {
     db.query(ischeckQuery, [id, pw], (err, rows) => {
         logincheck.check = false;
 
-        console.log(rows[0]);
-
-        if(rows[0] === undefined){
+        if(rows && rows.length > 0){
+            if(rows[0] === undefined){
+                logincheck.check = false;
+                logincheck.affectedRows = 0;
+                logincheck.userid = "";
+                logincheck.username = "";
+                logincheck.usermoney = 0;
+                res.send(logincheck);
+            }else {
+                logincheck.check = true;
+                logincheck.affectedRows = 1;
+                logincheck.userid = rows[0].userid;
+                logincheck.username = rows[0].username;
+                logincheck.usermoney = rows[0].usermoney;
+                res.send(logincheck);
+            }
+        }else {
             logincheck.check = false;
             logincheck.affectedRows = 0;
             logincheck.userid = "";
             logincheck.username = "";
             logincheck.usermoney = 0;
-            res.send(logincheck);
-        }else {
-            logincheck.check = true;
-            logincheck.affectedRows = 1;
-            logincheck.userid = rows[0].userid;
-            logincheck.username = rows[0].username;
-            logincheck.usermoney = rows[0].usermoney;
             res.send(logincheck);
         }
     });
