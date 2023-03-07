@@ -56,13 +56,13 @@ app.post("/signin", (req, res) => {
     var pw = req.body.pw;
     const logincheck = new Object();
 
-    const ischeckQuery = "SELECT userid, username, usermoney FROM blackjack.user";
+    /* const ischeckQuery = "SELECT userid, username, usermoney FROM blackjack.user";
     db.query(ischeckQuery, [id, pw], (err, rows) => {
         console.log("SELECT userid, username, usermoney FROM blackjack.user => " + rows);
 
-    });
+    }); */
 
-    /* const ischeckQuery = "SELECT userid, username, usermoney FROM blackjack.user WHERE userid = ? AND userpw = ?";
+    const ischeckQuery = "SELECT userid, username, usermoney FROM blackjack.user WHERE userid = ? AND userpw = ?";
     db.query(ischeckQuery, [id, pw], (err, rows) => {
         logincheck.check = false;
 
@@ -90,7 +90,7 @@ app.post("/signin", (req, res) => {
             logincheck.usermoney = 0;
             res.send(logincheck);
         }
-    }); */
+    });
 });
 
 app.post("/userinfo", (req, res) => {
