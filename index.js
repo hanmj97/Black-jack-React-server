@@ -249,6 +249,25 @@ app.post("/stand", (req, res) => {
 });
 
 
+app.post("/doubledown", (req, res) => {
+    var id = req.body.userid;
+    var perfectbetsmoney = req.body.perfectbetsmoney;
+    var betsmoney = req.body.betsmoney;
+
+    const ischeckQuery = "SELECT id, cardpattern, cardnum, packnum, usestate, cardimg from blackjack.card WHERE usestate = 'N' Order by rand() Limit 1";
+    db.query(ischeckQuery, [], (err, rows) => {
+        var doubledowncardid = rows[0].id;
+
+        const sqlQuery = "UPDATE blackjack.card SET usestate = 'Y' WHERE id = ?";
+        db.query(sqlQuery, [doubledowncardid], (err, result) => {
+            console.log("doubledown card state update complete");
+        });
+
+        res.send(rows);
+    });
+});
+
+
 app.post("/userwin", (req, res) => {
     var id = req.body.userid;
     var betsmoney = req.body.betsmoney;
@@ -271,6 +290,35 @@ app.post("/userdraw", (req, res) => {
     const calculatecheck = new Object();
 
     const ischeckQuery = "update blackjack.user set usermoney = usermoney + ? where userid = ?";
+    db.query(ischeckQuery, [betsmoney, id], (err, rows) => {
+        calculatecheck.calculate = "calculate finish";
+
+        res.send(calculatecheck);
+    });
+});
+
+app.post("/userdoublewin", (req, res) => {
+    var id = req.body.userid;
+    var betsmoney = req.body.betsmoney;
+
+    const calculatecheck = new Object();
+
+    const ischeckQuery = "update blackjack.user set usermoney = usermoney + ? + (? * 2) where userid = ?";
+    db.query(ischeckQuery, [betsmoney, betsmoney, id], (err, rows) => {
+        calculatecheck.calculate = "calculate finish";
+
+        res.send(calculatecheck);
+    });
+});
+
+
+app.post("/userdoublelose", (req, res) => {
+    var id = req.body.userid;
+    var betsmoney = req.body.betsmoney;
+
+    const calculatecheck = new Object();
+
+    const ischeckQuery = "update blackjack.user set usermoney = usermoney - ? where userid = ?";
     db.query(ischeckQuery, [betsmoney, id], (err, rows) => {
         calculatecheck.calculate = "calculate finish";
 
