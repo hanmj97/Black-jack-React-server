@@ -5,7 +5,7 @@ const mysql = require("mysql");
 const PORT = process.env.port || 8000;
 
 const db = mysql.createPool({
-    host: "https://port-0-black-jack-react-server-p8xrq2mleyd78ib.sel3.cloudtype.app/",
+    host: "127.0.0.1:3306",
     user: "hanmj97",
     password: "7891",
     database: "blackjack",
@@ -29,6 +29,8 @@ app.post("/signup", (req, res) => {
     const ischeckQuery = "SELECT userid FROM blackjack.user WHERE userid = ?";
     db.query(ischeckQuery, [id], (err, rows) => {
         idcheck.check = false;
+
+        console.log(rows);
 
         if(rows && rows.length > 0){
             if(rows[0] === undefined){
@@ -65,6 +67,8 @@ app.post("/signin", (req, res) => {
     const ischeckQuery = "SELECT userid, username, usermoney FROM blackjack.user WHERE userid = ? AND userpw = ?";
     db.query(ischeckQuery, [id, pw], (err, rows) => {
         logincheck.check = false;
+
+        console.log(rows);
 
         if(rows && rows.length > 0){
             if(rows[0] === undefined){
