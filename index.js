@@ -56,12 +56,6 @@ app.post("/signin", (req, res) => {
     var pw = req.body.pw;
     const logincheck = new Object();
 
-    /* const ischeckQuery = "SELECT userid, username, usermoney FROM blackjack.user";
-    db.query(ischeckQuery, [id, pw], (err, rows) => {
-        console.log("SELECT userid, username, usermoney FROM blackjack.user => " + rows);
-
-    }); */
-
     const ischeckQuery = "SELECT userid, username, usermoney FROM blackjack.user WHERE userid = ? AND userpw = ?";
     db.query(ischeckQuery, [id, pw], (err, rows) => {
         logincheck.check = false;
@@ -110,7 +104,6 @@ app.post("/userinfo", (req, res) => {
 
 
 app.post("/betting", (req, res) => {
-    console.log("userid : " + req.body.id +", batsmoney : " + req.body.betsmoney);
     var id = req.body.id;
     var betsmoney = req.body.betsmoney;
 
@@ -147,8 +140,6 @@ app.post("/randomcard", (req, res) => {
         if(cardrows.length < 30) {
             const recardstackQuery = "UPDATE blackjack.card SET usestate = 'N' WHERE 1 = 1";
             db.query(recardstackQuery, [], (err, result) => {
-                console.log("card stack restart!");
-
                 const ischeckQuery = "SELECT id, cardpattern, cardnum, packnum, usestate, cardimg from blackjack.card WHERE usestate = 'N' Order by rand() Limit 4";
                 db.query(ischeckQuery, [], (err, rows) => {
 
@@ -166,7 +157,7 @@ app.post("/randomcard", (req, res) => {
                                 
                                     const sqlQuery = "UPDATE blackjack.card SET usestate = 'Y' WHERE id = ?";
                                     db.query(sqlQuery, [cardid], (err, result) => {
-                                        console.log("card state update complete!");
+                                        console.log("use card state update complete!");
                                     });
                                 }
 
@@ -185,7 +176,7 @@ app.post("/randomcard", (req, res) => {
                         }else {
                             const sqlQuery = "UPDATE blackjack.card SET usestate = 'Y' WHERE id = ?";
                             db.query(sqlQuery, [cardid], (err, result) => {
-                                console.log("card state update complete!");
+                                console.log("use card state update complete!");
                             });
                         }
                     }
@@ -212,7 +203,7 @@ app.post("/randomcard", (req, res) => {
 
                     const sqlQuery = "UPDATE blackjack.card SET usestate = 'Y' WHERE id = ?";
                     db.query(sqlQuery, [cardid], (err, result) => {
-                        console.log("card state update complete!");
+                        console.log("use card state update complete!");
                     });
                 }
 
@@ -335,6 +326,21 @@ app.post("/userdoublewin", (req, res) => {
 
 
 app.post("/userdoublelose", (req, res) => {
+    var id = req.body.userid;
+    var betsmoney = req.body.betsmoney;
+
+    const calculatecheck = new Object();
+
+    const ischeckQuery = "update blackjack.user set usermoney = usermoney - ? where userid = ?";
+    db.query(ischeckQuery, [betsmoney, id], (err, rows) => {
+        calculatecheck.calculate = "calculate finish";
+
+        res.send(calculatecheck);
+    });
+});
+
+
+app.post("/userinsurancelose", (req, res) => {
     var id = req.body.userid;
     var betsmoney = req.body.betsmoney;
 
