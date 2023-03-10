@@ -161,7 +161,7 @@ app.post("/randomcard", (req, res) => {
                                 
                                     const sqlQuery = "UPDATE blackjack.card SET usestate = 'Y' WHERE id = ?";
                                     db.query(sqlQuery, [cardid], (err, result) => {
-                                        console.log("use card state update complete!");
+                                        //console.log("use card state update complete!");
                                     });
                                 }
 
@@ -180,7 +180,7 @@ app.post("/randomcard", (req, res) => {
                         }else {
                             const sqlQuery = "UPDATE blackjack.card SET usestate = 'Y' WHERE id = ?";
                             db.query(sqlQuery, [cardid], (err, result) => {
-                                console.log("use card state update complete!");
+                                //console.log("use card state update complete!");
                             });
                         }
                     }
@@ -207,7 +207,7 @@ app.post("/randomcard", (req, res) => {
 
                     const sqlQuery = "UPDATE blackjack.card SET usestate = 'Y' WHERE id = ?";
                     db.query(sqlQuery, [cardid], (err, result) => {
-                        console.log("use card state update complete!");
+                        //console.log("use card state update complete!");
                     });
                 }
 
@@ -239,7 +239,7 @@ app.post("/hit", (req, res) => {
 
         const sqlQuery = "UPDATE blackjack.card SET usestate = 'Y' WHERE id = ?";
         db.query(sqlQuery, [hitcardid], (err, result) => {
-            console.log("hit card state update complete");
+            //console.log("hit card state update complete");
         });
 
         res.send(rows);
@@ -258,7 +258,7 @@ app.post("/stand", (req, res) => {
 
         const sqlQuery = "UPDATE blackjack.card SET usestate = 'Y' WHERE id = ?";
         db.query(sqlQuery, [standcardid], (err, result) => {
-            console.log("Dealer hit card state update complete");
+            //console.log("Dealer hit card state update complete");
         });
 
         res.send(rows);
@@ -277,7 +277,7 @@ app.post("/doubledown", (req, res) => {
 
         const sqlQuery = "UPDATE blackjack.card SET usestate = 'Y' WHERE id = ?";
         db.query(sqlQuery, [doubledowncardid], (err, result) => {
-            console.log("doubledown card state update complete");
+            //console.log("doubledown card state update complete");
         });
 
         res.send(rows);
