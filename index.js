@@ -412,8 +412,6 @@ app.post("/userrank", (req, res) => {
 
     const ischeckQuery = "SELECT userid, username, usermoney FROM blackjack.user ORDER BY usermoney DESC Limit 5;";
     db.query(ischeckQuery, [], (err, rows) => {
-        console.log(rows);
-
         res.send(rows);
     });
 });
