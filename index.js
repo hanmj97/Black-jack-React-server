@@ -408,8 +408,6 @@ app.post("/userblackjack", (req, res) => {
 app.post("/userrank", (req, res) => {
     var id = req.body.id;
 
-    const calculatecheck = new Object();
-
     const ischeckQuery = "SELECT userid, username, usermoney FROM blackjack.user ORDER BY usermoney DESC Limit 5;";
     db.query(ischeckQuery, [], (err, rows) => {
         res.send(rows);
