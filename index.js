@@ -414,7 +414,7 @@ app.post("/userrank", (req, res) => {
     db.query(ischeckQuery, [], (err, rows) => {
         console.log(rows);
 
-        res.send(calculatecheck);
+        res.send(rows);
     });
 });
 
