@@ -331,7 +331,7 @@ app.post("/userdoublelose", (req, res) => {
 
     const calculatecheck = new Object();
 
-    const ischeckQuery = "update blackjack.user set usermoney = usermoney - ? where userid = ?";
+    const ischeckQuery = "update blackjack.user set usermoney = usermoney + ? where userid = ?";
     db.query(ischeckQuery, [betsmoney, id], (err, rows) => {
         calculatecheck.calculate = "calculate finish";
 
