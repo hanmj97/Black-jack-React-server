@@ -5,7 +5,7 @@ const mysql = require("mysql");
 const PORT = process.env.port || 8000;
 
 const db = mysql.createPool({
-    host: "localhost",
+    host: "121.169.40.14:3306",
     user: "hanmj97",
     password: "7891",
     database: "blackjack",
