@@ -405,6 +405,20 @@ app.post("/userblackjack", (req, res) => {
 });
 
 
+app.post("/userrank", (req, res) => {
+    var id = req.body.id;
+
+    const calculatecheck = new Object();
+
+    const ischeckQuery = "SELECT userid, username, usermoney FROM blackjack.user ORDER BY usermoney DESC Limit 5;";
+    db.query(ischeckQuery, [], (err, rows) => {
+        console.log(rows);
+
+        res.send(calculatecheck);
+    });
+});
+
+
 app.listen(PORT, () => {
     console.log(`running on port ${PORT}`);
 });
