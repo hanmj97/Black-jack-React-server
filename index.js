@@ -5,7 +5,7 @@ const mysql = require("mysql");
 const PORT = process.env.port || 8000;
 
 const db = mysql.createPool({
-    host: "121.169.40.14:3306",
+    host: "121.169.40.14",
     user: "hanmj97",
     password: "7891",
     database: "blackjack",
@@ -56,9 +56,13 @@ app.post("/signin", (req, res) => {
     var pw = req.body.pw;
     const logincheck = new Object();
 
+    console.log(req.body);
+
     const ischeckQuery = "SELECT userid, username, usermoney FROM blackjack.user WHERE userid = ? AND userpw = ?";
     db.query(ischeckQuery, [id, pw], (err, rows) => {
         logincheck.check = false;
+
+        console.log(rows);
 
         if(rows && rows.length > 0){
             if(rows[0] === undefined){
