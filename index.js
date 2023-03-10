@@ -34,6 +34,7 @@ app.post("/signup", (req, res) => {
             if(rows[0] === undefined){
                 const sqlQuery = "INSERT INTO blackjack.user (userid, userpw, username, usermoney, userban) VALUES (?, ?, ?, 300, 'N')";
                 db.query(sqlQuery, [id, pw, name], (err, result) => {
+                    console.log(id + "아이디로 " + name + " 님이 회원가입 하였습니다.");
                     res.send(result);
                 });
             }else {
@@ -44,6 +45,7 @@ app.post("/signup", (req, res) => {
         }else {
             const sqlQuery = "INSERT INTO blackjack.user (userid, userpw, username, usermoney, userban) VALUES (?, ?, ?, 300, 'N')";
             db.query(sqlQuery, [id, pw, name], (err, result) => {
+                console.log(id + "아이디로 " + name + " 님이 회원가입 하였습니다.");
                 res.send(result);
             });
         }
@@ -56,13 +58,11 @@ app.post("/signin", (req, res) => {
     var pw = req.body.pw;
     const logincheck = new Object();
 
-    console.log(req.body);
-
     const ischeckQuery = "SELECT userid, username, usermoney FROM blackjack.user WHERE userid = ? AND userpw = ?";
     db.query(ischeckQuery, [id, pw], (err, rows) => {
         logincheck.check = false;
 
-        console.log(rows);
+        console.log(id + "님이 로그인을 시도하였습니다.");
 
         if(rows && rows.length > 0){
             if(rows[0] === undefined){
